@@ -17,19 +17,21 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="theme-color" content="#f8f8f8">
-  <title>answer0732</title>
+  <title>Docker的进阶操作 - answer0732</title>
 
   
-    <meta name="description" content="Docker 的基本操作镜像的基本操作 搜索镜像 1docker search name  获取镜像 1docker pull name  删除镜像 1docker rmi name  镜像的查看 1docker images  容器的基本操作 创建容器 1docker run -itd --name&#x3D;container_name image_name   i表示已交互模式运行容器  d表示后台运">
+    <meta name="description" content="端口映射1docker run -itd container_name -p 8888:80 image_name   8888宿主机端口号 80 容器端口号  文件挂载1docker run -itd -v &#x2F;宿主机&#x2F;目录&#x2F;文件名:容器&#x2F;目录&#x2F;文件名	  将容器的文件复制到本地1docker cp 容器名:&#x2F;容器目录&#x2F;文件名 &#x2F;宿主机目录&#x2F;文件名  将本地文件复制到容器1docker cp &#x2F;宿">
 <meta property="og:type" content="article">
-<meta property="og:title" content="answer0732">
-<meta property="og:url" content="http://example.com/2022/04/23/Docker%20%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/index.html">
+<meta property="og:title" content="Docker的进阶操作">
+<meta property="og:url" content="http://example.com/2022/04/24/Docker%E7%9A%84%E8%BF%9B%E9%98%B6%E6%93%8D%E4%BD%9C/index.html">
 <meta property="og:site_name" content="answer0732">
-<meta property="og:description" content="Docker 的基本操作镜像的基本操作 搜索镜像 1docker search name  获取镜像 1docker pull name  删除镜像 1docker rmi name  镜像的查看 1docker images  容器的基本操作 创建容器 1docker run -itd --name&#x3D;container_name image_name   i表示已交互模式运行容器  d表示后台运">
+<meta property="og:description" content="端口映射1docker run -itd container_name -p 8888:80 image_name   8888宿主机端口号 80 容器端口号  文件挂载1docker run -itd -v &#x2F;宿主机&#x2F;目录&#x2F;文件名:容器&#x2F;目录&#x2F;文件名	  将容器的文件复制到本地1docker cp 容器名:&#x2F;容器目录&#x2F;文件名 &#x2F;宿主机目录&#x2F;文件名  将本地文件复制到容器1docker cp &#x2F;宿">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-04-23T15:41:07.289Z">
-<meta property="article:modified_time" content="2022-04-23T16:11:08.800Z">
+<meta property="article:published_time" content="2022-04-24T09:06:00.000Z">
+<meta property="article:modified_time" content="2022-04-24T10:09:01.209Z">
 <meta property="article:author" content="answer0732">
+<meta property="article:tag" content="工具设置">
+<meta property="article:tag" content="虚拟化">
 <meta name="twitter:card" content="summary">
   
   
@@ -64,7 +66,7 @@
 
 <div class="widgets">
 
-<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">本文目录</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Docker-%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C"><span class="toc-text">Docker 的基本操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%95%9C%E5%83%8F%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C"><span class="toc-text">镜像的基本操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%B9%E5%99%A8%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C"><span class="toc-text">容器的基本操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%B9%E5%99%A8%E7%9A%84%E4%BF%AE%E6%94%B9%E5%8F%8A%E4%BF%9D%E5%AD%98"><span class="toc-text">容器的修改及保存</span></a></li></ol></li></ol></div></div></div>
+<div class="widget-wrap single" id="toc"><div class="widget-header cap dis-select"><span class="name">本文目录</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AB%AF%E5%8F%A3%E6%98%A0%E5%B0%84"><span class="toc-text">端口映射</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E6%8C%82%E8%BD%BD"><span class="toc-text">文件挂载</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%B0%86%E5%AE%B9%E5%99%A8%E7%9A%84%E6%96%87%E4%BB%B6%E5%A4%8D%E5%88%B6%E5%88%B0%E6%9C%AC%E5%9C%B0"><span class="toc-text">将容器的文件复制到本地</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%B0%86%E6%9C%AC%E5%9C%B0%E6%96%87%E4%BB%B6%E5%A4%8D%E5%88%B6%E5%88%B0%E5%AE%B9%E5%99%A8"><span class="toc-text">将本地文件复制到容器</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%B9%E5%99%A8%E4%BA%92%E8%81%94"><span class="toc-text">容器互联</span></a></li></ol></div></div></div>
 
 
 </div>
@@ -77,77 +79,26 @@
       
 
 
-<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" href="/">文章</a></div><div id="post-meta">发布于&nbsp;<time datetime="2022-04-23T15:41:07.289Z">2022-04-23</time></div></div>
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/Docker/">Docker</a></div><div id="post-meta">发布于&nbsp;<time datetime="2022-04-24T09:06:00.000Z">2022-04-24</time></div></div>
 
 <article class='content md post'>
-
-<h2 id="Docker-的基本操作"><a href="#Docker-的基本操作" class="headerlink" title="Docker 的基本操作"></a>Docker 的基本操作</h2><h3 id="镜像的基本操作"><a href="#镜像的基本操作" class="headerlink" title="镜像的基本操作"></a>镜像的基本操作</h3><ol>
-<li><p>搜索镜像</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker search name</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>获取镜像</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull name</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>删除镜像</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker rmi name</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>镜像的查看</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker images</span><br></pre></td></tr></table></figure></li>
-</ol>
-<h3 id="容器的基本操作"><a href="#容器的基本操作" class="headerlink" title="容器的基本操作"></a>容器的基本操作</h3><ol>
-<li><p>创建容器</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -itd --name=container_name image_name</span><br></pre></td></tr></table></figure>
+<h1 class="article-title"><span>Docker的进阶操作</span></h1>
+<h3 id="端口映射"><a href="#端口映射" class="headerlink" title="端口映射"></a>端口映射</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -itd container_name -p 8888:80 image_name</span><br></pre></td></tr></table></figure>
 
 <ul>
-<li><p>i表示已交互模式运行容器</p>
-</li>
-<li><p>d表示后台运行容器，并返回容器ID</p>
-</li>
-<li><p>t表示为容器重新分配一个伪输入终端</p>
-</li>
-<li><p>name表示容器名称</p>
-</li>
-<li><p>image_name 镜像的名字</p>
-</li>
+<li>8888宿主机端口号</li>
+<li>80 容器端口号</li>
 </ul>
-</li>
-<li><p>查看所有容器（运行中+已停止）</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker ps -a</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>查看正在运行的容器</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker ps</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>启动容器</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker start container_name/container_id</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>停止容器</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker stop container_name/container_id</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>重启容器</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker restart container_name/container_id</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>删除容器</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker rm container_name/container_id</span><br></pre></td></tr></table></figure></li>
-</ol>
-<h3 id="容器的修改及保存"><a href="#容器的修改及保存" class="headerlink" title="容器的修改及保存"></a>容器的修改及保存</h3><ol>
-<li><p>进入容器</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it container_name/container_id /bin/bash</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>退出容器</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">exit</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>提交修改</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker commit -a &quot;author&quot; -m &quot;message&quot; container_name/container_id new_image_name:tag_name</span><br></pre></td></tr></table></figure>
+<h3 id="文件挂载"><a href="#文件挂载" class="headerlink" title="文件挂载"></a>文件挂载</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -itd -v /宿主机/目录/文件名:容器/目录/文件名	</span><br></pre></td></tr></table></figure>
 
-<ul>
-<li>-a 可选参数 用于指定作者</li>
-<li>-m 可选参数 提交信息</li>
-<li>container_id 被修改的容器id </li>
-<li>new_image_name 新镜像名称</li>
-<li>tag_name 新镜像的标签 可不写 默认为latest</li>
-</ul>
-</li>
-</ol>
+<h5 id="将容器的文件复制到本地"><a href="#将容器的文件复制到本地" class="headerlink" title="将容器的文件复制到本地"></a>将容器的文件复制到本地</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker cp 容器名:/容器目录/文件名 /宿主机目录/文件名</span><br></pre></td></tr></table></figure>
+
+<h5 id="将本地文件复制到容器"><a href="#将本地文件复制到容器" class="headerlink" title="将本地文件复制到容器"></a>将本地文件复制到容器</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker cp /宿主机目录/文件名 容器名:/容器目录/文件名</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="容器互联"><a href="#容器互联" class="headerlink" title="容器互联"></a>容器互联</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -itd --link 要关联的容器名称:容器在被关联的容器中的别名</span><br></pre></td></tr></table></figure>
+
 
 
 <div class="article-footer reveal fs14"><section id="license"><div class="header"><span>许可协议</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
@@ -155,7 +106,7 @@
 
 </article>
 
-<div class="related-wrap reveal" id="read-next"><section class="header cap theme"><span>接下来阅读</span></section><section class="body fs14"><a id="next" href="/2021/10/29/APP-%E5%8A%A0%E5%9B%BA%E5%90%8E%E4%BA%8C%E6%AC%A1%E7%AD%BE%E5%90%8D/">APP 加固后二次签名<span class="note">较早</span></a><div class="line"></div></section></div>
+<div class="related-wrap reveal" id="read-next"><section class="header cap theme"><span>接下来阅读</span></section><section class="body fs14"><a id="next" href="/2022/04/24/Docker%20%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/">Docker的基本操作<span class="note">较早</span></a><div class="line"></div></section></div>
 
 
 
